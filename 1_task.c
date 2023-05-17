@@ -37,7 +37,7 @@ void executeCommand(const char *command[])
 	else if (pid == 0)
 	{
 		/* Child process */
-		execv(command[0], (char *const *)command);
+		execvp(command[0], (char *const *)command);
 
 		/* If exec fails, print error and exit child process */
 		perror("Command execution failed");
