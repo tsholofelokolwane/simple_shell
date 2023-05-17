@@ -37,11 +37,12 @@ void executeCommand(const char *command[])
 	else if (pid == 0)
 	{
 		/* Child process */
-		execvp(command[0], (char *const *)command);
-
-		/* If exec fails, print error and exit child process */
-		perror("Command execution failed");
-		exit(EXIT_FAILURE);
+		if (execvp(command[0], (char *const *)command) == -1)
+		{
+			/* If exec fails, print error and exit child process */
+			perror("Command execution failed");
+			exit(EXIT_FAILURE);
+		}
 	}
 	else
 	{
@@ -91,7 +92,15 @@ int main(void)
 		}
 		arguments[numArgs] = NULL;
 
-		executeCommand(arguments);
+		/* Check if the command exists and is accessible */
+		if (access(arguments[0], X_OK) == 0)
+		{
+			executeCommand(arguments);
+		}
+		else
+		{
+			printf("Command not found: %s\n", arguments[0]);
+		}
 	}
 
 	return (0);
