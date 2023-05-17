@@ -7,6 +7,7 @@
 
 #define MAX_COMMAND_LENGTH 100
 #define MAX_ARGUMENTS 10
+#define EXITCMD "exit"
 
 /**
  * displayPrompt - Display a prompt
@@ -67,6 +68,8 @@ int main(void)
 	int numArgs;
 	char *token;
 
+	int wstatus;
+
 	while (1)
 	{
 		displayPrompt();
@@ -101,6 +104,16 @@ int main(void)
 		{
 			printf("Command not found: %s\n", arguments[0]);
 		}
+
+		/* Built-in: Exit */
+		if (strcmp(EXITCMD, arguments[0]) == 0)
+			return (0);
+
+		/* Wait for program to finish and exit status */
+		wait(&wstatus);
+
+		if (WIFEXITED(wstatus))
+			printf("<%d>", WEXITSTATUS(wstatus));
 	}
 
 	return (0);
