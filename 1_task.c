@@ -6,6 +6,7 @@
 #include <sys/wait.h>
 
 #define MAX_COMMAND_LENGTH 100
+#define MAX_ARGUMENTS 10
 
 /**
  * displayPrompt - Display a prompt
@@ -17,11 +18,11 @@ void displayPrompt(void)
 }
 
 /**
- * executeCommand - Executes given command
- * @command: command line
+ * executeCommand - Executes given command with arguments
+ * @command: array of strings containing command and arguments
  */
 
-void executeCommand(const char *command)
+void executeCommand(const char *command[])
 {
 	pid_t pid;
 
@@ -36,7 +37,7 @@ void executeCommand(const char *command)
 	else if (pid == 0)
 	{
 		/* Child process */
-		execlp(command, command, NULL);
+		execv(command[0], (char *const *)command);
 
 		/* If exec fails, print error and exit child process */
 		perror("Command execution failed");
@@ -60,6 +61,10 @@ void executeCommand(const char *command)
 int main(void)
 {
 	char command[MAX_COMMAND_LENGTH];
+	const char *arguments[MAX_ARGUMENTS + 1];
+
+	int numArgs;
+	char *token;
 
 	while (1)
 	{
@@ -75,7 +80,18 @@ int main(void)
 		/* Remove trailing newline character */
 		command[strcspn(command, "\n")] = '\0';
 
-		executeCommand(command);
+		/* Tokenize command and arguments */
+		numArgs = 0;
+		token = strtok(command, " ");
+
+		while (token != NULL && numArgs < MAX_ARGUMENTS - 1)
+		{
+			arguments[numArgs++] = token;
+			token = strtok(NULL, " ");
+		}
+		arguments[numArgs] = NULL;
+
+		executeCommand(arguments);
 	}
 
 	return (0);
