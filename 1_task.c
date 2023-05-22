@@ -26,7 +26,7 @@ void displayPrompt(void)
  *
  */
 
-void executeCommand(const char *command[], const char *environ[])
+void executeCommand(const char **command, const char *environ)
 {
 	pid_t pid;
 
