@@ -5,12 +5,12 @@
 #define MAX_LENGTH 100
 
 /**
- * main - my own getline function
+ * getlineMain - my own getline function
  *
  * Return: Always 0
  */
 
-int main(void)
+int getlineMain(void)
 {
 	char buffer[MAX_LENGTH];
 	int i = 0;

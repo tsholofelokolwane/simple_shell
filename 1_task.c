@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include "main.h"
 
 #define MAX_COMMAND_LENGTH 100
 #define MAX_ARGUMENTS 10
@@ -16,6 +17,7 @@
 void displayPrompt(void)
 {
 	const char *prompt = ">>> ";
+
 	write(1, prompt, strlen(prompt));  /* Use write() to print the prompt */
 }
 
@@ -26,7 +28,7 @@ void displayPrompt(void)
  *
  */
 
-void executeCommand(const char **command, const char *environ)
+void executeCommand(const char **command, char **environ)
 {
 	pid_t pid;
 
@@ -62,7 +64,6 @@ void executeCommand(const char **command, const char *environ)
  *
  * Return: Always 0
  */
-extern char **environ;
 
 int main(void)
 {
@@ -141,6 +142,7 @@ int main(void)
 			int exit_status = WEXITSTATUS(wstatus);
 			char exit_status_str[10];
 			int len = snprintf(exit_status_str, sizeof(exit_status_str), "<%d>", exit_status);
+
 			write(1, exit_status_str, len);
 		}
 
