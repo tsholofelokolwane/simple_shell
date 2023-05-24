@@ -132,7 +132,17 @@ int main(void)
 
 		/* Built-in: Exit */
 		if (strcmp(EXITCMD, arguments[0]) == 0)
-			return (0);
+		{
+			int exit_status = 0;
+
+			/* Check if an argument is provided */
+			if (numArgs > 1)
+			{
+				exit_status = customAtoi(arguments[1]); /* Convert argument to an integer */
+			}
+
+			exit(exit_status); /* Use the exit status to exit the shell */
+		}
 
 		/* Wait for program to finish and exit status */
 		wait(&wstatus);
