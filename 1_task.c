@@ -133,15 +133,15 @@ int main(void)
 		/* Built-in: Exit */
 		if (strcmp(EXITCMD, arguments[0]) == 0)
 		{
-			int exit_status = 0;
+			int status = 0;
 
 			/* Check if an argument is provided */
 			if (numArgs > 1)
 			{
-				exit_status = customAtoi(arguments[1]); /* Convert argument to an integer */
+				status = customAtoi(arguments[1]); /* Convert argument to an integer */
 			}
 
-			exit(exit_status); /* Use the exit status to exit the shell */
+			exit(status); /* Use the exit status to exit the shell */
 		}
 
 		/* Wait for program to finish and exit status */
@@ -149,9 +149,9 @@ int main(void)
 
 		if (WIFEXITED(wstatus))
 		{
-			int exit_status = WEXITSTATUS(wstatus);
+			int status = WEXITSTATUS(wstatus);
 			char exit_status_str[10];
-			int len = snprintf(exit_status_str, sizeof(exit_status_str), "<%d>", exit_status);
+			int len = snprintf(exit_status_str, sizeof(exit_status_str), "<%d>", status);
 
 			write(1, exit_status_str, len);
 		}
